@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "day1": "ts-node-dev --respawn --transpileOnly ./src/day1.ts"
+    "day1": "ts-node-dev --respawn --transpileOnly ./src/day1.ts",
+    "day2": "ts-node-dev --respawn --transpileOnly ./src/day2.ts"
   },
   "keywords": [],
   "author": "",
