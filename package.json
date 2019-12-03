@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "day1": "ts-node-dev --respawn --transpileOnly ./src/day1.ts",
-    "day2": "ts-node-dev --respawn --transpileOnly ./src/day2.ts"
+    "day2": "ts-node-dev --respawn --transpileOnly ./src/day2.ts",
+    "day3": "ts-node-dev --respawn --transpileOnly ./src/day3.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +18,8 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.149",
+    "lodash": "^4.17.15",
     "rxjs": "^6.5.3",
     "ts-node-dev": "^1.0.0-pre.44"
   }
