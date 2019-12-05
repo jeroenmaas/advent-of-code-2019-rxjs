@@ -8,6 +8,8 @@
     "day1": "ts-node-dev --respawn --transpileOnly ./src/day1.ts",
     "day2": "ts-node-dev --respawn --transpileOnly ./src/day2.ts",
     "day3": "ts-node-dev --respawn --transpileOnly ./src/day3.ts",
+    "day4": "ts-node-dev --respawn --transpileOnly ./src/day4.ts",
+    "day5": "ts-node-dev --respawn --transpileOnly ./src/day5.ts",
     "build": "tsc"
   },
   "keywords": [],

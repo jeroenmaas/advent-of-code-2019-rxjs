@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import {EMPTY, from, of, pipe} from 'rxjs';
 import {expand, filter, last, map, mergeMap, min, share, shareReplay, take, tap, toArray} from 'rxjs/operators';
-var _ = require('lodash');
+import groupBy from 'lodash/groupBy'
+import intersectionWith from 'lodash/intersectionWith'
 
 const input = fs.readFileSync('resources/day3.txt', 'utf8');
 
@@ -45,14 +46,14 @@ const matches$ = of(input).pipe(
         )
     }),
     map(wire => {
-        return _.groupBy(wire, (pos => pos[0] + "_" + pos[1]));
+        return groupBy(wire, (pos => pos[0] + "_" + pos[1]));
     }),
     toArray(),
     mergeMap(wires => {
         const cableAPositions = wires[0];
         const cableBPositions = wires[1];
 
-        const overlappingKeys = _.intersectionWith(Object.keys(cableAPositions), Object.keys(cableBPositions));
+        const overlappingKeys = intersectionWith(Object.keys(cableAPositions), Object.keys(cableBPositions));
 
         const matches = [] as [number, number, number][];
         overlappingKeys.forEach(key => {
