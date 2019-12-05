@@ -29,6 +29,22 @@ const instructions: Instruction[] = [
     {
         opcode: 4,
         arguments: 1
+    },
+    {
+        opcode: 5,
+        arguments: 2
+    },
+    {
+        opcode: 6,
+        arguments: 2
+    },
+    {
+        opcode: 7,
+        arguments: 3
+    },
+    {
+        opcode: 8,
+        arguments: 3
     }
 ];
 
@@ -49,14 +65,14 @@ function reverseString(str: string) {
     return str.split("").reverse().join("");
 }
 
-const convertArrayToOutput = () => pipe(
+const convertArrayToOutput = (input: number) => pipe(
     mergeMap((array: number[]) => {
         return of([array, 0, []] as [number[], number, number[]]).pipe(
             expand(([array, position, outputs]) => {
                 const opcodeInfo = String(array[position]);
                 const opcode = Number(opcodeInfo.slice(-2));
                 if (opcode == 99) {
-                    console.log('reached opcode 99');
+                    //console.log('reached opcode 99');
                     return EMPTY;
                 }
                 const instruction = instructions.find(s => s.opcode == opcode);
@@ -78,16 +94,44 @@ const convertArrayToOutput = () => pipe(
                         console.error("Unknown mode!");
                     }
                 }
+
+                let nextPosition = position + (1 + instruction.arguments);
                 if (opcode == 1) {
                     array[array[position + 3]] = getRealValue(array, args[0]) + getRealValue(array, args[1]);
                 } else if (opcode == 2) {
                     array[array[position + 3]] = getRealValue(array, args[0]) * getRealValue(array, args[1]);
                 } else if (opcode == 3) {
-                    array[array[position + 1]] = 1;
+                    array[array[position + 1]] = input;
                 }else if (opcode == 4) {
                     outputs.push(getRealValue(array, args[0]))
+                }else if (opcode == 5) {
+                    const value = getRealValue(array, args[0]);
+                    if(value != 0) {
+                        nextPosition = getRealValue(array, args[1]);
+                    }
+                }else if (opcode == 6) {
+                    const value = getRealValue(array, args[0]);
+                    if(value == 0) {
+                        nextPosition = getRealValue(array, args[1]);
+                    }
+                }else if (opcode == 7) {
+                    const value1 = getRealValue(array, args[0]);
+                    const value2 = getRealValue(array, args[1]);
+                    if(value1 < value2) {
+                        array[array[position + 3]] = 1;
+                    }else {
+                        array[array[position + 3]] = 0;
+                    }
+                }else if (opcode == 8) {
+                    const value1 = getRealValue(array, args[0]);
+                    const value2 = getRealValue(array, args[1]);
+                    if(value1 == value2) {
+                        array[array[position + 3]] = 1;
+                    }else {
+                        array[array[position + 3]] = 0;
+                    }
                 }
-                return of([array, position + (1 + instruction.arguments), outputs]);
+                return of([array, nextPosition, outputs]);
             }),
             last()
         )
@@ -96,6 +140,11 @@ const convertArrayToOutput = () => pipe(
 ;
 
 input$.pipe(
-    convertArrayToOutput(),
+    convertArrayToOutput(1),
     map(output => output[2].slice(-1)[0])
 ).subscribe(output => console.log('part1: ' + output));
+
+input$.pipe(
+    convertArrayToOutput(5),
+    map(output => output[2].slice(-1)[0])
+).subscribe(output => console.log('part2: ' + output));
