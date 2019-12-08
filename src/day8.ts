@@ -41,8 +41,9 @@ layers$.pipe(
         let pixels = [];
         for(var i = 0; i != layers[0].length; i++) {
             for(var y = 0; y !== layers.length; y++) {
-                if(layers[y][i] != 2) {
-                    pixels.push(layers[y][i]);
+                const value = layers[y][i];
+                if(value != 2) {
+                    pixels.push(value == 1 ? '■' : ' ');
                     break;
                 }
             }
@@ -50,4 +51,5 @@ layers$.pipe(
         return pixels
     }),
     mergeMap(pixels => from(_.chunk(pixels, wide))),
+    map(test => test.toString())
 ).subscribe(output => console.log(output));
